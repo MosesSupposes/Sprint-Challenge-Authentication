@@ -16,7 +16,7 @@ router.post('/register', async (req, res) => {
 
 });
 
-router.post('/login', validateFields(['username', 'password']), async (req, res) => {
+router.post('/login', async (req, res) => {
   try {
     const user = await authModel.findByUsername(req.body.username)
     bcrypt.compare(req.body.password, user.password, (err, passwordsMatch) => {
