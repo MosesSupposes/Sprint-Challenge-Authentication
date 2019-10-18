@@ -11,14 +11,14 @@ module.exports = {
             .first()
     },
 
-    create(user) {
-        const [username] = db('users').insert(user, 'username')
-
-        return this.findByUsername(username)
+    async create(user) {
+        await db('users').insert(user, 'username')
+        
+        return this.findByUsername(user.username)
     },
 
-    update(username, changes) {
-        db('users').update(changes)
+    async update(username, changes) {
+        await db('users').update(changes)
 
         return this.findByUsername(username)
     },
