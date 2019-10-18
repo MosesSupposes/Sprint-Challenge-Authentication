@@ -68,7 +68,7 @@ export default function Login(props) {
                 </Form.Field>
                 
                 <Button type="submit">Login</Button>
-                <P><strong>Already a user?</strong> <Link to="/register"><Underlined>Login now.</Underlined></Link></P>
+                <P><strong>Already a user?</strong> <Link to="/"><Underlined>Login now.</Underlined></Link></P>
             </Form>
         </Container>
     )
