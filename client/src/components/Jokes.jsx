@@ -1,6 +1,14 @@
 import React from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
+import styled from 'styled-components'
+
+const Ul = styled.ul`
+    list-style-type: none
+`
+const Li = styled.li`
+    margin: 1rem 0;
+`
 
 export default function Jokes(props) {
     const [jokes, setJokes] = React.useState([])
@@ -20,9 +28,9 @@ export default function Jokes(props) {
         <div>
             <Link to='/register'>Register</Link>
             <Link to='/'>Login</Link>
-            <ul>
-                {jokes.map(({joke, id}) => <li key={id}>{joke}</li>)}
-            </ul>
+            <Ul>
+                {jokes.map(({joke, id}) => <Li key={id}>{joke}</Li>)}
+            </Ul>
         </div>
     )
 }
