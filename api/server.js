@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 
+const authModel = require('../auth/authModel.js')
+
 const authenticate = require('../auth/authenticate-middleware.js');
 const validateFields = require('../auth/validateFieldsMiddleware.js')
 const authRouter = require('../auth/auth-router.js');
@@ -13,6 +15,15 @@ const requireUsernameAndPassword = validateFields(['username', 'password'])
 server.use(helmet());
 server.use(cors());
 server.use(express.json());
+
+server.get('/api/users', authenticate,  async (req, res) => {
+    try {
+      const users = await authModel.all()
+      res.status(200).json(users)
+    } catch(e) {
+      res.status(404).json({ error: { message: 'There are no users stored in the database yet.'}})
+    }
+  })
 
 server.use('/api/auth', requireUsernameAndPassword, authRouter);
 server.use('/api/jokes', authenticate, jokesRouter);
