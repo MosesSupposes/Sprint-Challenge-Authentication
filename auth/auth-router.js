@@ -7,7 +7,7 @@ const { jwtSecret } = require('../config/secrets')
 
 router.post('/register', async (req, res) => {
   try {
-    const newUser = await authModel.create()
+    const newUser = await authModel.create(req.body)
     res.status(201).json(newUser)
 
   } catch(e) {
