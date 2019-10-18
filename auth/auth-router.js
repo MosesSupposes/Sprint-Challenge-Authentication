@@ -3,31 +3,39 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 
 const authModel = require('./authModel')
-const { jwtSecret } = require('../config/secrets')
+const { JWT_SECRET } = require('../config/secrets')
 
-router.post('/register', async (req, res) => {
+router.post('/register', (req, res) => {
   try {
-    const newUser = await authModel.create(req.body)
-    res.status(201).json(newUser)
+    bcrypt.hash(req.body.password, 8, async (err, encryptedPw) => {
+      if (err) res.status(500).json({error: { message: 'Internal server error.'}})
+      else {
+        req.body.password = encryptedPw
+        const newUser = await authModel.create(req.body)
+        res.status(201).json(newUser)
+      }
+    })
 
   } catch(e) {
     res.status(500).json({ error: { message: 'Internal server error.'}})
   }
-
 });
 
 router.post('/login', async (req, res) => {
   try {
     const user = await authModel.findByUsername(req.body.username)
+    
     bcrypt.compare(req.body.password, user.password, (err, passwordsMatch) => {
       if (err) res.status(500).json({ error: { message: 'Internal server error.'}})
       else {
         if (passwordsMatch) {
           res.status(200).json({
-            success: `Welcome ${user.username}`,
+            success: `Welcome ${user.username}!`,
             user,
-            token: generateToken()
+            token: generateToken(user)
           })
+        } else {
+          res.status(400).json({ error: { message: "Invalid password."}})
         }
       }
     })
@@ -42,7 +50,7 @@ router.post('/login', async (req, res) => {
     }
     const options = { expiresIn: '1h' }
 
-    return jwt.sign(payload, jwtSecret, options)
+    return jwt.sign(payload, JWT_SECRET, options)
   }
 });
 
