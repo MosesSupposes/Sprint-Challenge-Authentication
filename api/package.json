@@ -7,7 +7,7 @@
     "testEnvironment": "node"
   },
   "scripts": {
-    "test": "NODE_ENV=testing jest --watch",
+    "test": "cross-env NODE_ENV=testing jest --watch",
     "server": "nodemon index.js"
   },
   "repository": {
