@@ -2,12 +2,12 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 
-const authModel = require('../auth/authModel.js')
+const authModel = require('./auth/authModel.js')
 
-const authenticate = require('../auth/authenticate-middleware.js');
-const validateFields = require('../auth/validateFieldsMiddleware.js')
-const authRouter = require('../auth/auth-router.js');
-const jokesRouter = require('../jokes/jokes-router.js');
+const authenticate = require('./auth/authenticate-middleware.js');
+const validateFields = require('./auth/validateFieldsMiddleware.js')
+const authRouter = require('./auth/auth-router.js');
+const jokesRouter = require('./jokes/jokes-router.js');
 
 const server = express();
 const requireUsernameAndPassword = validateFields(['username', 'password'])
